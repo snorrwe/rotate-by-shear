@@ -4,4 +4,4 @@
 
 <h1>Welcome</h1>
 
-<RotateCanvas />
+<RotateCanvas imagePath="favicon.png" />

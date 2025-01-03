@@ -20,8 +20,10 @@ precision highp float;
 out vec4 outColor;
 in vec2 uv;
 
+uniform sampler2D u_texture;
+
 void main() {
-    outColor = vec4(0, uv.x, uv.y, 1);
+    outColor = texture(u_texture, uv);
 }
 `;
 
@@ -65,7 +67,8 @@ export function createProgram({ gl }) {
     gl.attachShader(program, fragment);
     gl.linkProgram(program);
     if (gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        return { program };
+        const textureLocation = gl.getUniformLocation(program, 'u_texture');
+        return { program, textureLocation };
     }
 
     console.error('Failed to link shader program', gl.getProgramInfoLog(program));
