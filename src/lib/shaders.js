@@ -8,8 +8,8 @@ void main() {
   float u = float((gl_VertexID << 1) & 2);
   float v = float(gl_VertexID & 2);
 
-  gl_Position = vec4(u * 2.0 - 1.0, v * -2.0 + 1.0, 0.0, 1.0);
   uv = vec2(u, v);
+  gl_Position = vec4(uv * vec2(2, -2) + vec2(-1, 1), 0.0, 1.0);
 }
 `;
 
@@ -24,8 +24,8 @@ uniform sampler2D u_texture;
 uniform float u_phi;
 
 void main() {
-    outColor = texture(u_texture, uv);
-    outColor.r = u_phi;
+  outColor = texture(u_texture, uv);
+  outColor.r = u_phi;
 }
 `;
 
