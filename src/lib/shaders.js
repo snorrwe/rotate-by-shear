@@ -60,9 +60,11 @@ function createShader({ gl, type, source }) {
 export function createProgram({ gl }) {
     let vertex = createShader({ gl, type: gl.VERTEX_SHADER, source: VERTEX_SRC });
     console.assert(vertex != null);
+    if (!vertex) return null;
 
     let fragment = createShader({ gl, type: gl.FRAGMENT_SHADER, source: FRAGMENT_SRC });
     console.assert(fragment != null);
+    if (!fragment) return null;
 
     let program = gl.createProgram();
     gl.attachShader(program, vertex);
