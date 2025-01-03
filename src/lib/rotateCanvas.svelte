@@ -2,7 +2,7 @@
 	const { imagePath, angle } = $props();
 	import { createProgram } from './shaders.js';
 	import { appState } from './state.svelte.js';
-	import { createTexture } from './texture.js';
+	import { createTexture, wrap } from './texture.js';
 
 	/**
 	 * @type {HTMLCanvasElement}
@@ -95,8 +95,8 @@
 
 		// set the filtering so we don't need mips
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap(gl));
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap(gl));
 
 		return targetTexture;
 	}

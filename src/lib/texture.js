@@ -1,4 +1,12 @@
 /**
+ *
+ * @param {WebGL2RenderingContext} gl
+ */
+export function wrap(gl) {
+    return gl.REPEAT;
+}
+
+/**
  * @param {Object} args
  * @param {WebGL2RenderingContext} args.gl
  * @param {string} args.url
@@ -15,8 +23,8 @@ export function createTexture({ gl, url }) {
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
             gl.generateMipmap(gl.TEXTURE_2D);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap(gl));
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap(gl));
             resolve(texture);
         });
     });
