@@ -44,7 +44,7 @@
 			gl.activeTexture(gl.TEXTURE0 + 0);
 			gl.useProgram(appState.program.program);
 			gl.bindTexture(gl.TEXTURE_2D, appState.texture);
-			gl.uniform1f(appState.program.sigmaLocation, 0.9);
+			gl.uniform1f(appState.program.phiLocation, 0.9);
 			gl.drawArrays(gl.TRIANGLES, 0, 6);
 		}
 	});

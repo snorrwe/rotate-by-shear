@@ -21,11 +21,11 @@ out vec4 outColor;
 in vec2 uv;
 
 uniform sampler2D u_texture;
-uniform float u_sigma;
+uniform float u_phi;
 
 void main() {
     outColor = texture(u_texture, uv);
-    outColor.r = u_sigma;
+    outColor.r = u_phi;
 }
 `;
 
@@ -70,8 +70,8 @@ export function createProgram({ gl }) {
     gl.linkProgram(program);
     if (gl.getProgramParameter(program, gl.LINK_STATUS)) {
         const textureLocation = gl.getUniformLocation(program, 'u_texture');
-        const sigmaLocation = gl.getUniformLocation(program, 'u_sigma');
-        return { program, textureLocation, sigmaLocation };
+        const phiLocation = gl.getUniformLocation(program, 'u_phi');
+        return { program, textureLocation, phiLocation };
     }
 
     console.error('Failed to link shader program', gl.getProgramInfoLog(program));
