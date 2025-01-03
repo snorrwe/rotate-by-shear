@@ -20,6 +20,7 @@
           buildInputs = [
             deno
             just
+            clang-tools # clang-format to format shaders
           ];
         };
       }
