@@ -7,7 +7,5 @@
 <h1>Welcome</h1>
 
 <RotateCanvas imagePath="favicon.png" angle={phi} />
-<label for="angle">
-	{phi}
-</label>
+<input type="number" min="0" max="6.283" step="0.1" bind:value={phi} />
 <input name="angle" type="range" min="0" max="6.283" step="0.1" bind:value={phi} />
