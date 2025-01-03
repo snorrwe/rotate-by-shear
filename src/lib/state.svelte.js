@@ -9,7 +9,7 @@
  * @type {AppState} appState
  */
 export const appState = $state({
-    texture: null,
-    gl: null,
-    program: null
+  texture: null,
+  gl: null,
+  program: null,
 });

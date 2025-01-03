@@ -34,21 +34,21 @@ void main() {
  * @param {string} args.source
  */
 function createShader({ gl, type, source }) {
-    let shader = gl.createShader(type);
+  let shader = gl.createShader(type);
 
-    if (shader == null) {
-        console.error('Failed to create the shader');
-        return null;
-    }
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-    if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        return shader;
-    }
-
-    console.error('Failed to compile shader', gl.getShaderInfoLog(shader));
-    gl.deleteShader(shader);
+  if (shader == null) {
+    console.error("Failed to create the shader");
     return null;
+  }
+  gl.shaderSource(shader, source);
+  gl.compileShader(shader);
+  if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    return shader;
+  }
+
+  console.error("Failed to compile shader", gl.getShaderInfoLog(shader));
+  gl.deleteShader(shader);
+  return null;
 }
 
 /**
@@ -56,25 +56,29 @@ function createShader({ gl, type, source }) {
  * @param {WebGL2RenderingContext} args.gl
  */
 export function createProgram({ gl }) {
-    let vertex = createShader({ gl, type: gl.VERTEX_SHADER, source: VERTEX_SRC });
-    console.assert(vertex != null);
-    if (!vertex) return null;
+  let vertex = createShader({ gl, type: gl.VERTEX_SHADER, source: VERTEX_SRC });
+  console.assert(vertex != null);
+  if (!vertex) return null;
 
-    let fragment = createShader({ gl, type: gl.FRAGMENT_SHADER, source: FRAGMENT_SRC });
-    console.assert(fragment != null);
-    if (!fragment) return null;
+  let fragment = createShader({
+    gl,
+    type: gl.FRAGMENT_SHADER,
+    source: FRAGMENT_SRC,
+  });
+  console.assert(fragment != null);
+  if (!fragment) return null;
 
-    let program = gl.createProgram();
-    gl.attachShader(program, vertex);
-    gl.attachShader(program, fragment);
-    gl.linkProgram(program);
-    if (gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        const textureLocation = gl.getUniformLocation(program, 'u_texture');
-        const transformLocation = gl.getUniformLocation(program, 'u_tform');
-        return { program, textureLocation, transformLocation };
-    }
+  let program = gl.createProgram();
+  gl.attachShader(program, vertex);
+  gl.attachShader(program, fragment);
+  gl.linkProgram(program);
+  if (gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    const textureLocation = gl.getUniformLocation(program, "u_texture");
+    const transformLocation = gl.getUniformLocation(program, "u_tform");
+    return { program, textureLocation, transformLocation };
+  }
 
-    console.error('Failed to link shader program', gl.getProgramInfoLog(program));
-    gl.deleteProgram(program);
-    return null;
+  console.error("Failed to link shader program", gl.getProgramInfoLog(program));
+  gl.deleteProgram(program);
+  return null;
 }
