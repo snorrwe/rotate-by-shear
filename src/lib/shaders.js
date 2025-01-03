@@ -2,7 +2,7 @@ const VERTEX_SRC = `#version 300 es
 
 precision highp float;
 
-out highp vec2 uv;
+out vec2 uv;
 uniform mat2 u_tform;
 
 void main() {

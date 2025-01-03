@@ -12,12 +12,21 @@
 	/**
 	 * @param {number} phi: rotation angle in radians
 	 */
-	function makeMat(phi) {
+	function shearX(phi) {
 		phi = phi || 0;
 		const th = Math.tan(phi / 2);
+
+		return new Float32Array([1, th, 0, 1]);
+	}
+
+	/**
+	 * @param {number} phi
+	 */
+	function shearY(phi) {
+		phi = phi || 0;
 		const s = Math.tan(phi);
 
-		return new Float32Array([1 - th * s, th * th * s - 2 * th, s, 1 + s * -th]);
+		return new Float32Array([1, 0, s, 1]);
 	}
 
 	$effect(() => {
@@ -43,6 +52,55 @@
 		});
 	});
 
+	/**
+	 * @param {WebGL2RenderingContext} gl
+	 * @param {Float32Array} mat
+	 * @param {WebGLTexture } texture
+	 */
+	function render(gl, mat, texture) {
+		gl.useProgram(appState.program.program);
+		gl.activeTexture(gl.TEXTURE0 + 0);
+		gl.bindTexture(gl.TEXTURE_2D, texture);
+		gl.uniformMatrix2fv(appState.program.transformLocation, false, mat);
+		gl.drawArrays(gl.TRIANGLES, 0, 3);
+	}
+
+	/**
+	 * @param {WebGL2RenderingContext} gl
+	 */
+	function createBufferTexture(gl) {
+		const targetTextureWidth = gl.canvas.width;
+		const targetTextureHeight = gl.canvas.height;
+		const targetTexture = gl.createTexture();
+		gl.bindTexture(gl.TEXTURE_2D, targetTexture);
+
+		// define size and format of level 0
+		const level = 0;
+		const internalFormat = gl.RGBA;
+		const border = 0;
+		const format = gl.RGBA;
+		const type = gl.UNSIGNED_BYTE;
+		const data = null;
+		gl.texImage2D(
+			gl.TEXTURE_2D,
+			level,
+			internalFormat,
+			targetTextureWidth,
+			targetTextureHeight,
+			border,
+			format,
+			type,
+			data
+		);
+
+		// set the filtering so we don't need mips
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+		return targetTexture;
+	}
+
 	$effect(() => {
 		const gl = appState.gl;
 		if (!gl) return;
@@ -52,11 +110,25 @@
 		gl.clear(gl.COLOR_BUFFER_BIT);
 
 		if (appState.texture != null) {
-			gl.activeTexture(gl.TEXTURE0 + 0);
-			gl.useProgram(appState.program.program);
-			gl.bindTexture(gl.TEXTURE_2D, appState.texture);
-			gl.uniformMatrix2fv(appState.program.transformLocation, false, makeMat(angle));
-			gl.drawArrays(gl.TRIANGLES, 0, 6);
+			let lhs = createBufferTexture(gl);
+			let rhs = createBufferTexture(gl);
+			if (!lhs || !rhs) {
+				console.error('Failed to create backbuffers');
+				return;
+			}
+			let fb = gl.createFramebuffer();
+
+			const shX = shearX(angle);
+			const shY = shearY(angle);
+
+			gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+
+			gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, lhs, 0);
+			render(gl, shX, appState.texture);
+			gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, rhs, 0);
+			render(gl, shY, lhs);
+			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+			render(gl, shX, rhs);
 		}
 	});
 </script>
