@@ -1,13 +1,13 @@
 /**
- * @type {Object} AppState
- * @property {WebGL2RenderingContext|null} appState.gl
- * @property {WebGLTexture|null} appState.texture
- * @property {any} appState.program
- *
- * @constant {AppState} appState
+ * @typedef {Object} AppState
+ * @property {WebGL2RenderingContext|null} gl
+ * @property {WebGLTexture|null} texture
+ * @property {any} program
  */
 
-
+/**
+ * @type {AppState} appState
+ */
 export const appState = $state({
     texture: null,
     gl: null,

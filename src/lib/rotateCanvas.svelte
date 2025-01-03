@@ -26,13 +26,13 @@
 	});
 
 	$effect(() => {
+		if (!appState.gl) return;
 		createTexture({ gl: appState.gl, url: imagePath }).then((tx) => {
 			appState.texture = tx;
 		});
 	});
 
 	$effect(() => {
-		/** @type {WebGL2RenderingContext} */
 		const gl = appState.gl;
 		if (!gl) return;
 		// draw
