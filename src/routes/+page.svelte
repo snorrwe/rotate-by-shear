@@ -4,4 +4,4 @@
 
 <h1>Welcome</h1>
 
-<RotateCanvas imagePath="favicon.png" />
+<RotateCanvas imagePath="favicon.png" angle=3.14 />
