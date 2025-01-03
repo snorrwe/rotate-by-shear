@@ -1,7 +1,7 @@
 <script>
 	import RotateCanvas from '$lib/rotateCanvas.svelte';
 
-    let phi = $state(0);
+    let phi = $state(1.5);
 </script>
 
 <h1>Welcome</h1>

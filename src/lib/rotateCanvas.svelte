@@ -24,7 +24,7 @@
 	 */
 	function shearY(phi) {
 		phi = phi || 0;
-		const s = Math.tan(phi);
+		const s = Math.sin(phi);
 
 		return new Float32Array([1, 0, s, 1]);
 	}
@@ -129,6 +129,10 @@
 			render(gl, shY, lhs);
 			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 			render(gl, shX, rhs);
+
+			gl.deleteTexture(lhs);
+			gl.deleteTexture(rhs);
+			gl.deleteFramebuffer(fb);
 		}
 	});
 </script>
