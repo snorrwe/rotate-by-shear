@@ -13,11 +13,9 @@
 	 * @param {number} phi: rotation angle in radians
 	 */
 	function makeMat(phi) {
-        phi = phi || 0;
+		phi = phi || 0;
 		const th = Math.tan(phi / 2);
 		const s = Math.tan(phi);
-
-        console.log(th, s);
 
 		return new Float32Array([1 - th * s, th * th * s - 2 * th, s, 1 + s * -th]);
 	}

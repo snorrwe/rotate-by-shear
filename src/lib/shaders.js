@@ -23,10 +23,7 @@ in vec2 uv;
 uniform sampler2D u_texture;
 
 void main() {
-  // outColor = texture(u_texture, uv);
-  outColor.xy = uv;
-  outColor.z = 0.0;
-  outColor.a = 1.0;
+  outColor = texture(u_texture, uv);
 }
 `;
 
