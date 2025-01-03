@@ -1,11 +1,13 @@
 <script>
 	import RotateCanvas from '$lib/rotateCanvas.svelte';
 
-    let phi = $state(1.5);
+	let phi = $state(1.5);
 </script>
 
 <h1>Welcome</h1>
 
 <RotateCanvas imagePath="favicon.png" angle={phi} />
-<input type="number" min="0" max="6.283" step="0.1" bind:value={phi} />
-
+<label for="angle">
+	{phi}
+</label>
+<input name="angle" type="range" min="0" max="6.283" step="0.1" bind:value={phi} />
