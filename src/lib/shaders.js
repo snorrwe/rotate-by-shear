@@ -21,9 +21,11 @@ out vec4 outColor;
 in vec2 uv;
 
 uniform sampler2D u_texture;
+uniform float u_sigma;
 
 void main() {
     outColor = texture(u_texture, uv);
+    outColor.r = u_sigma;
 }
 `;
 
@@ -68,7 +70,8 @@ export function createProgram({ gl }) {
     gl.linkProgram(program);
     if (gl.getProgramParameter(program, gl.LINK_STATUS)) {
         const textureLocation = gl.getUniformLocation(program, 'u_texture');
-        return { program, textureLocation };
+        const sigmaLocation = gl.getUniformLocation(program, 'u_sigma');
+        return { program, textureLocation, sigmaLocation };
     }
 
     console.error('Failed to link shader program', gl.getProgramInfoLog(program));
