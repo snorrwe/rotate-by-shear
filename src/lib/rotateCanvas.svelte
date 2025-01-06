@@ -15,7 +15,6 @@
 	function shearX(phi) {
 		phi = phi || 0;
 		const th = Math.tan(phi / 2);
-
 		return new Float32Array([1, th, 0, 1]);
 	}
 
@@ -25,7 +24,6 @@
 	function shearY(phi) {
 		phi = phi || 0;
 		const s = Math.sin(phi);
-
 		return new Float32Array([1, 0, s, 1]);
 	}
 
@@ -94,7 +92,7 @@
 		);
 
 		// set the filtering so we don't need mips
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap(gl));
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap(gl));
 
