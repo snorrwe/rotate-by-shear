@@ -110,12 +110,14 @@
 		if (appState.texture != null) {
 			let shear1 = createBufferTexture(gl);
 			let shear2 = createBufferTexture(gl);
-			if (!shear1 || !shear2) {
+			let shear3 = createBufferTexture(gl);
+			if (!shear1 || !shear2 || !shear3) {
 				console.error('Failed to create backbuffers');
 				return;
 			}
 			let fb = gl.createFramebuffer();
 
+			const identity = shearX(0);
 			const shX = shearX(angle);
 			const shY = shearY(angle);
 
@@ -125,11 +127,29 @@
 			render(gl, shX, appState.texture);
 			gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, shear2, 0);
 			render(gl, shY, shear1);
+			gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, shear3, 0);
+			render(gl, shX, shear2);
+
 			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+			let w = gl.canvas.width / 4;
+			[
+				{ mat: identity, texture: appState.texture },
+				{ mat: shX, texture: appState.texture },
+				{ mat: shY, texture: shear1 },
+				{ mat: shX, texture: shear2 }
+			].forEach(({ mat, texture }, i) => {
+				gl.viewport(i * w, 0, w, gl.canvas.height);
+				render(gl, mat, texture);
+			});
+
+			gl.viewport(w, 0, w, gl.canvas.height);
+			render(gl, shY, shear1);
+			gl.viewport(2 * w, 0, w, gl.canvas.height);
 			render(gl, shX, shear2);
 
 			gl.deleteTexture(shear1);
 			gl.deleteTexture(shear2);
+			gl.deleteTexture(shear3);
 			gl.deleteFramebuffer(fb);
 		}
 	});
