@@ -142,11 +142,6 @@
 				render(gl, mat, texture);
 			});
 
-			gl.viewport(w, 0, w, gl.canvas.height);
-			render(gl, shY, shear1);
-			gl.viewport(2 * w, 0, w, gl.canvas.height);
-			render(gl, shX, shear2);
-
 			gl.deleteTexture(shear1);
 			gl.deleteTexture(shear2);
 			gl.deleteTexture(shear3);
