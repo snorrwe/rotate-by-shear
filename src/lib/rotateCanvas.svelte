@@ -108,9 +108,9 @@
 		gl.clear(gl.COLOR_BUFFER_BIT);
 
 		if (appState.texture != null) {
-			let lhs = createBufferTexture(gl);
-			let rhs = createBufferTexture(gl);
-			if (!lhs || !rhs) {
+			let shear1 = createBufferTexture(gl);
+			let shear2 = createBufferTexture(gl);
+			if (!shear1 || !shear2) {
 				console.error('Failed to create backbuffers');
 				return;
 			}
@@ -121,15 +121,15 @@
 
 			gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
 
-			gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, lhs, 0);
+			gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, shear1, 0);
 			render(gl, shX, appState.texture);
-			gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, rhs, 0);
-			render(gl, shY, lhs);
+			gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, shear2, 0);
+			render(gl, shY, shear1);
 			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-			render(gl, shX, rhs);
+			render(gl, shX, shear2);
 
-			gl.deleteTexture(lhs);
-			gl.deleteTexture(rhs);
+			gl.deleteTexture(shear1);
+			gl.deleteTexture(shear2);
 			gl.deleteFramebuffer(fb);
 		}
 	});
