@@ -34,7 +34,7 @@ void main() { outColor = texture(u_texture, uv); }
  * @param {string} args.source
  */
 function createShader({ gl, type, source }) {
-  let shader = gl.createShader(type);
+  const shader = gl.createShader(type);
 
   if (shader == null) {
     console.error("Failed to create the shader");
@@ -56,11 +56,15 @@ function createShader({ gl, type, source }) {
  * @param {WebGL2RenderingContext} args.gl
  */
 export function createProgram({ gl }) {
-  let vertex = createShader({ gl, type: gl.VERTEX_SHADER, source: VERTEX_SRC });
+  const vertex = createShader({
+    gl,
+    type: gl.VERTEX_SHADER,
+    source: VERTEX_SRC,
+  });
   console.assert(vertex != null);
   if (!vertex) return null;
 
-  let fragment = createShader({
+  const fragment = createShader({
     gl,
     type: gl.FRAGMENT_SHADER,
     source: FRAGMENT_SRC,
@@ -68,7 +72,7 @@ export function createProgram({ gl }) {
   console.assert(fragment != null);
   if (!fragment) return null;
 
-  let program = gl.createProgram();
+  const program = gl.createProgram();
   gl.attachShader(program, vertex);
   gl.attachShader(program, fragment);
   gl.linkProgram(program);

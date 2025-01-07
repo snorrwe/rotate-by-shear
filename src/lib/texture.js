@@ -14,7 +14,7 @@ export function createTexture({ gl, url }) {
   console.debug("loading texture", url);
 
   return new Promise((resolve, reject) => {
-    let img = new Image();
+    const img = new Image();
     img.src = url;
     img.addEventListener("load", () => {
       const texture = gl.createTexture();
