@@ -4,7 +4,7 @@
 	let phi = $state(0);
 	let phiRads = $derived((phi * Math.PI) / 180.0);
 	let width = $state();
-	let height = $derived(Math.floor((width / 16) * 5));
+	let height = $derived(Math.floor((width / 4)));
 
 	/**
 	 * output a string rounded to `decimals` number of decimal places
