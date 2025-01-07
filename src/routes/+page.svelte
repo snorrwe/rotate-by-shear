@@ -24,9 +24,7 @@
 		<p>Shear X by {rounded(Math.tan(phi / 2))}</p>
 	</div>
 
-	<div>
-		<RotateCanvas {width} {height} imagePath="rocket.jpg" angle={phiRads} />
-	</div>
+    <RotateCanvas {width} {height} imagePath="rocket.jpg" angle={phiRads} />
 
 	<div>
 		<label for="angle">Angle in degress</label>
