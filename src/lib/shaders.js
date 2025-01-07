@@ -4,11 +4,13 @@ precision highp float;
 
 out vec2 uv;
 uniform mat2 u_tform;
+uniform float u_flip;
 
 void main() {
   vec2 v = vec2(float((gl_VertexID << 1) & 2), float(gl_VertexID & 2));
 
   uv = (v - vec2(0.5)) * u_tform + vec2(0.5);
+  uv.y *= u_flip;
   gl_Position = vec4(v * vec2(2, -2) + vec2(-1, 1), 0.0, 1.0);
 }
 `;
@@ -22,9 +24,7 @@ in vec2 uv;
 
 uniform sampler2D u_texture;
 
-void main() {
-  outColor = texture(u_texture, uv);
-}
+void main() { outColor = texture(u_texture, uv); }
 `;
 
 /**
@@ -75,7 +75,8 @@ export function createProgram({ gl }) {
   if (gl.getProgramParameter(program, gl.LINK_STATUS)) {
     const textureLocation = gl.getUniformLocation(program, "u_texture");
     const transformLocation = gl.getUniformLocation(program, "u_tform");
-    return { program, textureLocation, transformLocation };
+    const flipLocation = gl.getUniformLocation(program, "u_flip");
+    return { program, textureLocation, transformLocation, flipLocation };
   }
 
   console.error("Failed to link shader program", gl.getProgramInfoLog(program));

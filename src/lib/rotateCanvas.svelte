@@ -55,11 +55,12 @@
 	 * @param {Float32Array} mat
 	 * @param {WebGLTexture } texture
 	 */
-	function render(gl, mat, texture) {
+	function render(gl, mat, texture, flip=false) {
 		gl.useProgram(appState.program.program);
 		gl.activeTexture(gl.TEXTURE0 + 0);
 		gl.bindTexture(gl.TEXTURE_2D, texture);
 		gl.uniformMatrix2fv(appState.program.transformLocation, false, mat);
+        gl.uniform1f(appState.program.flipLocation, flip ? -1 : 1);
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
 	}
 
@@ -117,7 +118,7 @@
 			}
 			let fb = gl.createFramebuffer();
 
-			const identity = shearX(0);
+			const identity = new Float32Array([1, 0, 0, 1]);
 			const shX = shearX(angle);
 			const shY = shearY(angle);
 
@@ -132,14 +133,9 @@
 
 			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 			let w = gl.canvas.width / 4;
-			[
-				{ mat: identity, texture: appState.texture },
-				{ mat: shX, texture: appState.texture },
-				{ mat: shY, texture: shear1 },
-				{ mat: shX, texture: shear2 }
-			].forEach(({ mat, texture }, i) => {
+			[appState.texture, shear1, shear2, shear3].forEach((texture, i) => {
 				gl.viewport(i * w, 0, w, gl.canvas.height);
-				render(gl, mat, texture);
+				render(gl, identity, texture, i % 2 == 1);
 			});
 
 			gl.deleteTexture(shear1);
