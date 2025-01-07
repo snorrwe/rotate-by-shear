@@ -1,5 +1,5 @@
 <script>
-	const { imagePath, angle } = $props();
+	const { imagePath, angle, width, height } = $props();
 	import { createProgram } from './shaders.js';
 	import { appState } from './state.svelte.js';
 	import { createTexture, wrap } from './texture.js';
@@ -30,6 +30,7 @@
 	$effect(() => {
 		const gl = cv.getContext('webgl2');
 		console.assert(gl != null);
+		console.assert(width && height); // trigger on resize
 		appState.gl = gl;
 		if (!gl) {
 			return;
@@ -55,12 +56,12 @@
 	 * @param {Float32Array} mat
 	 * @param {WebGLTexture } texture
 	 */
-	function render(gl, mat, texture, flip=false) {
+	function render(gl, mat, texture, flip = false) {
 		gl.useProgram(appState.program.program);
 		gl.activeTexture(gl.TEXTURE0 + 0);
 		gl.bindTexture(gl.TEXTURE_2D, texture);
 		gl.uniformMatrix2fv(appState.program.transformLocation, false, mat);
-        gl.uniform1f(appState.program.flipLocation, flip ? -1 : 1);
+		gl.uniform1f(appState.program.flipLocation, flip ? -1 : 1);
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
 	}
 
@@ -146,4 +147,4 @@
 	});
 </script>
 
-<canvas bind:this={cv} width="720" height="480"> </canvas>
+<canvas style="width={width}; height={height}" bind:this={cv} {width} {height}> </canvas>
