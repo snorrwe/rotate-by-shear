@@ -1,4 +1,5 @@
 <script>
+	import { shearXFactor, shearYFactor } from '$lib';
 	const { imagePath, angle, width, height } = $props();
 	import { createProgram } from './shaders.js';
 	import { appState } from './state.svelte.js';
@@ -13,18 +14,14 @@
 	 * @param {number} phi: rotation angle in radians
 	 */
 	function shearX(phi) {
-		phi = phi || 0;
-		const th = Math.tan(phi / 2);
-		return new Float32Array([1, th, 0, 1]);
+		return new Float32Array([1, shearXFactor(phi), 0, 1]);
 	}
 
 	/**
 	 * @param {number} phi
 	 */
 	function shearY(phi) {
-		phi = phi || 0;
-		const s = Math.sin(phi);
-		return new Float32Array([1, 0, s, 1]);
+		return new Float32Array([1, 0, shearYFactor(phi), 1]);
 	}
 
 	$effect(() => {

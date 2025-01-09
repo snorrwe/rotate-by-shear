@@ -1,10 +1,14 @@
 <script>
+	import { shearXFactor, shearYFactor } from '$lib';
 	import RotateCanvas from '$lib/rotateCanvas.svelte';
 
 	let phi = $state(0);
 	let phiRads = $derived((phi * Math.PI) / 180.0);
 	let width = $state();
-	let height = $derived(Math.floor((width / 4)));
+	let height = $derived(Math.floor(width / 4));
+
+	let shearX = $derived(rounded(shearXFactor(phi)));
+	let shearY = $derived(rounded(shearYFactor(phi)));
 
 	/**
 	 * output a string rounded to `decimals` number of decimal places
@@ -19,12 +23,12 @@
 <div class="container">
 	<div class="labels" bind:clientWidth={width}>
 		<p>Original</p>
-		<p>Shear X by {rounded(Math.tan(phi / 2))}</p>
-		<p>Shear Y by {rounded(Math.sin(phi))}</p>
-		<p>Shear X by {rounded(Math.tan(phi / 2))}</p>
+		<p>Shear X by {shearX}</p>
+		<p>Shear Y by {shearY}</p>
+		<p>Shear X by {shearX}</p>
 	</div>
 
-    <RotateCanvas {width} {height} imagePath="rocket.jpg" angle={phiRads} />
+	<RotateCanvas {width} {height} imagePath="rocket.jpg" angle={phiRads} />
 
 	<div>
 		<label for="angle">Angle in degress</label>
