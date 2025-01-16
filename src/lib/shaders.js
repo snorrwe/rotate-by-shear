@@ -1,21 +1,27 @@
-const VERTEX_SRC = `#version 300 es
+export const VERTEX_SRC = `#version 300 es
 
 precision highp float;
 
 out vec2 uv;
+// shear matrix
 uniform mat2 u_tform;
+// -1 or 1, strictly for visualization purposes
 uniform float u_flip;
 
 void main() {
+  // setup a fullscreen triangle based on the vertex indices.
   vec2 v = vec2(float((gl_VertexID << 1) & 2), float(gl_VertexID & 2));
 
+  // apply the shear for the UV coords, shearing from the center of the image
   uv = (v - vec2(0.5)) * u_tform + vec2(0.5);
   uv.y *= u_flip;
+  // position the vertices in clip space so they cover the framebuffer 
+  // from 0,0 to 1,1
   gl_Position = vec4(v * vec2(2, -2) + vec2(-1, 1), 0.0, 1.0);
 }
 `;
 
-const FRAGMENT_SRC = `#version 300 es
+export const FRAGMENT_SRC = `#version 300 es
 
 precision highp float;
 
@@ -24,7 +30,11 @@ in vec2 uv;
 
 uniform sampler2D u_texture;
 
-void main() { outColor = texture(u_texture, uv); }
+void main() {
+  // nothing interesting going on here, just sample the texture based on the UV
+  // coords computed in the vertex shader
+  outColor = texture(u_texture, uv);
+}
 `;
 
 /**

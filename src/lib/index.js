@@ -4,12 +4,12 @@
  * @param {number} phi
  */
 export function shearXFactor(phi) {
-    return Math.tan(phi / 2);
+  return Math.tan(phi / 2);
 }
 
 /**
  * @param {number} phi
  */
 export function shearYFactor(phi) {
-    return Math.sin(phi);
+  return Math.sin(phi);
 }
