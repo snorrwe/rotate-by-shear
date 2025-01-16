@@ -1,5 +1,5 @@
 <script>
-	import { shearXFactor, shearYFactor } from '$lib';
+	import { shearX, shearY } from '$lib';
 	const { imagePath, angle, width, height } = $props();
 	import { createProgram } from './shaders.js';
 	import { appState } from './state.svelte.js';
@@ -9,20 +9,6 @@
 	 * @type {HTMLCanvasElement}
 	 */
 	let cv;
-
-	/**
-	 * @param {number} phi: rotation angle in radians
-	 */
-	function shearX(phi) {
-		return new Float32Array([1, shearXFactor(phi), 0, 1]);
-	}
-
-	/**
-	 * @param {number} phi
-	 */
-	function shearY(phi) {
-		return new Float32Array([1, 0, shearYFactor(phi), 1]);
-	}
 
 	$effect(() => {
 		const gl = cv.getContext('webgl2');

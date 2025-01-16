@@ -1,5 +1,12 @@
 <script>
-	import { shearXFactor, shearYFactor } from '$lib';
+	import {
+		shearXFactor,
+		shearYFactor,
+		shearX as shearXMat,
+		shearY as shearYMat,
+		rounded
+	} from '$lib';
+	import Matrix from '$lib/matrix.svelte';
 	import RotateCanvas from '$lib/rotateCanvas.svelte';
 
 	import { VERTEX_SRC, FRAGMENT_SRC } from '$lib/shaders';
@@ -15,14 +22,8 @@
 	let shearX = $derived(rounded(shearXFactor(phi)));
 	let shearY = $derived(rounded(shearYFactor(phi)));
 
-	/**
-	 * output a string rounded to `decimals` number of decimal places
-	 * @param {number} n
-	 */
-	function rounded(n, decimals = 2) {
-		const denom = Math.pow(10, decimals);
-		return (Math.round(n * denom) / denom).toFixed(decimals);
-	}
+	let sx = $derived(shearXMat(phi));
+	let sy = $derived(shearYMat(phi));
 
 	let vertex_src = $state();
 	$effect(() => {
@@ -53,14 +54,24 @@
 		<input name="angle" type="range" min="-90" max="90" step="5" bind:value={phi} />
 	</div>
 
+	<div>
+		<p>Shear X matrix</p>
+		<Matrix matrix={sx} />
+	</div>
+
+	<div>
+		<p>Shear Y matrix</p>
+		<Matrix matrix={sy} />
+	</div>
+
 	<div class="shader">
-        Vertex Shader
+		Vertex Shader
 		{#if vertex_src?.value}
 			<pre><code>{@html vertex_src.value}</code></pre>
 		{/if}
 	</div>
 	<div class="shader">
-        Fragment Shader
+		Fragment Shader
 		{#if fragment_src?.value}
 			<pre><code>{@html fragment_src.value}</code></pre>
 		{/if}
@@ -83,7 +94,7 @@
 		justify-content: space-around;
 	}
 
-    .shader {
-        margin-top: 15px;
-    }
+	.shader {
+		margin-top: 15px;
+	}
 </style>
