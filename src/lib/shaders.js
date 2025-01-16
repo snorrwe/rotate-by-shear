@@ -5,7 +5,7 @@ precision highp float;
 out vec2 uv;
 // shear matrix
 uniform mat2 u_tform;
-// -1 or 1, strictly for visualization purposes
+// -1 or 1
 uniform float u_flip;
 
 void main() {
