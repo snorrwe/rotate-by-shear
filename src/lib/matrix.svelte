@@ -4,7 +4,6 @@
 	const { matrix } = $props();
 
 	const n = Math.sqrt(matrix.length);
-	console.log(matrix, n);
 </script>
 
 <div style="--n: {n}">
